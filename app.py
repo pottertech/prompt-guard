@@ -3,6 +3,7 @@ Prompt Guard - API Server
 FastAPI server for scanning content for prompt injections.
 """
 
+import os
 import re
 from pathlib import Path
 from fastapi import FastAPI, HTTPException
@@ -44,7 +45,25 @@ DEFAULT_CONFIG = {
     "logging": {"enabled": False}
 }
 
-guard = PromptGuard(DEFAULT_CONFIG)
+
+def load_config() -> dict:
+    """Load config from CONFIG_PATH env var, or use defaults."""
+    config_path = os.environ.get("CONFIG_PATH")
+    
+    if config_path and Path(config_path).exists():
+        import yaml
+        with open(config_path) as f:
+            config = yaml.safe_load(f)
+            # Support nested prompt_guard key or top-level
+            if "prompt_guard" in config:
+                return config["prompt_guard"]
+            return config
+    
+    return DEFAULT_CONFIG
+
+
+# Initialize guard with config
+guard = PromptGuard(load_config())
 
 
 class ScanRequest(BaseModel):
