@@ -77,3 +77,10 @@ testpaths = ["tests"]
 python_files = ["test_*.py"]
 python_classes = ["Test*"]
 python_functions = ["test_*"]
+
+[tool.openclaw]
+skill.name = "prompt-guard"
+skill.version = "3.3.0"
+skill.description = "577+ pattern prompt injection defense with optional API for early-access and premium patterns. Tiered loading, hash cache, 11 SHIELD categories, 10 languages."
+skill.entry = "SKILL.md"
+skill.keywords = ["security", "prompt-injection", "defense", "ai-safety"]
